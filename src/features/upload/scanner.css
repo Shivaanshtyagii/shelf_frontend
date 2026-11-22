@@ -1,0 +1,11 @@
+.file-button { position: relative; cursor: pointer; }
+.file-button input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.file-button:focus-within { outline: 3px solid #3d8d82; outline-offset: 3px; }
+.checkbox { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+.checkbox input { accent-color: var(--accent); width: 1rem; min-height: 0; height: 1rem; }
+.scan-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 12rem), 1fr)); gap: 0.7rem; }
+.scan-card { border: 1px solid var(--line); padding: 0.6rem; border-radius: 0.5rem; }
+.scan-thumbnail { display: grid; place-items: center; height: 8rem; overflow: hidden; background: var(--soft); border-radius: 0.4rem; }
+.scan-thumbnail img { max-height: 7rem; max-width: min(100%, 7rem); object-fit: contain; }
+.scan-controls { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+.scan-controls button { padding: 0.35rem 0.5rem; min-height: 2.05rem; font-size: 0.9rem; }
