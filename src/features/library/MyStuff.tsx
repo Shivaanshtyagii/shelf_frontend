@@ -2,10 +2,16 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { api, ApiError, message } from "@/lib/api";
-import { price, scopeLabels, statusLabel, type Appeal, type Commerce, type Decision, type Listing, type Member, type Pickup, type Report } from "@/lib/types";
+import { currentMember } from "@/features/account/session";
+import { api, message } from "@/lib/api";
+import { price, statusLabel } from "@/lib/format";
+import { scopeLabels, type Listing } from "@/features/listings/model";
+import type { Appeal, Decision, Report } from "@/features/moderation/model";
+import type { Commerce } from "@/features/commerce/model";
+import type { Member } from "@/features/account/model";
+import type { Pickup } from "@/features/pickup/model";
 import { Empty, Feedback } from "@/ui/Feedback";
-import { PickupPanel } from "./PickupPanel";
+import { PickupPanel } from "@/features/pickup/PickupPanel";
 
 type Activity = { reports: Report[]; appeals: Appeal[] };
 type Library = { listings: Listing[]; seller: string; pickup: Pickup[]; activity: Activity; commerce: Commerce };
@@ -20,10 +26,7 @@ export function MyStuff() {
 
   const refresh = useCallback(async (signal?: AbortSignal) => {
     const options = { signal };
-    const member = await api<Member>("/auth/me", options).catch((error: unknown) => {
-      if (error instanceof ApiError && error.status === 401) return undefined;
-      throw error;
-    });
+    const member = await currentMember(signal);
     if (signal?.aborted) return;
     setUser(member);
     if (!member) return;

@@ -1,6 +1,6 @@
 # Shelf web
 
-Next.js App Router and TypeScript. The four primary routes are Explore, Your College, Upload / Scan, and My Stuff. Account and moderation are separate routes. Features live in `src/features`, shared UI in `src/ui`, and the typed API client in `src/lib`.
+Next.js App Router and TypeScript. The four primary routes are Explore, Your College, Upload / Scan, and My Stuff. Account and moderation are separate routes. Route files in `src/app` compose screens. Each folder in `src/features` owns a workflow or business domain, including its API types in `model.ts` where needed. For example, Upload composes the local scanner with the listing editor, and My Stuff composes the pickup panel with account activity. Reusable UI lives in `src/ui`. Shared HTTP transport and display formatting live in `src/lib`.
 
 ## Local development
 
@@ -17,5 +17,6 @@ Camera capture is supported by the device file picker when available. Scan conve
 
 ```sh
 npm run typecheck
+npm test
 npm run build
 ```

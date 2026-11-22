@@ -3,11 +3,14 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { api, ApiError, message } from "@/lib/api";
-import type { Capabilities, Listing, Member } from "@/lib/types";
+import { currentMember } from "@/features/account/session";
+import { api, message } from "@/lib/api";
+import type { Capabilities } from "@/lib/capabilities";
+import type { Listing } from "@/features/listings/model";
+import type { Member } from "@/features/account/model";
 import { Feedback } from "@/ui/Feedback";
 import { Scanner } from "./Scanner";
-import { ListingForm } from "./ListingForm";
+import { ListingForm } from "@/features/listings/ListingForm";
 
 export function UploadWorkspace() {
   const draftId = useSearchParams().get("draft");
@@ -26,10 +29,7 @@ export function UploadWorkspace() {
     const options = { signal: abort.signal };
     Promise.all([
       api<Capabilities>("/capabilities", options),
-      api<Member>("/auth/me", options).catch((error: unknown) => {
-        if (error instanceof ApiError && error.status === 401) return undefined;
-        throw error;
-      }),
+      currentMember(abort.signal),
     ]).then(async ([features, user]) => {
       if (abort.signal.aborted) return;
       setCapabilities(features);

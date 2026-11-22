@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { api, ApiError, message } from "@/lib/api";
-import { statusLabel, type Course, type DirectoryRequest, type Institution, type Member, type RequestKind } from "@/lib/types";
+import { currentMember } from "@/features/account/session";
+import { api, message } from "@/lib/api";
+import { statusLabel } from "@/lib/format";
+import type { Course, DirectoryRequest, Institution, RequestKind } from "@/features/college/model";
+import type { Member } from "@/features/account/model";
 import { Discovery } from "@/features/discovery/Discovery";
 import { Empty, Feedback } from "@/ui/Feedback";
 
@@ -24,10 +27,7 @@ export function CollegePanel() {
     const abort = new AbortController();
     Promise.all([
       api<Institution[]>("/institutions", { signal: abort.signal }),
-      api<Member>("/auth/me", { signal: abort.signal }).catch((error: unknown) => {
-        if (error instanceof ApiError && error.status === 401) return undefined;
-        throw error;
-      }),
+      currentMember(abort.signal),
     ]).then(async ([directory, user]) => {
       setInstitutions(directory);
       setMember(user);

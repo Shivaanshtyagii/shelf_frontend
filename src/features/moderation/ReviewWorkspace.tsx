@@ -2,7 +2,10 @@
 
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { api, message } from "@/lib/api";
-import { scopeLabels, statusLabel, type DirectoryRequest, type ModerationQueue } from "@/lib/types";
+import { scopeLabels } from "@/features/listings/model";
+import { statusLabel } from "@/lib/format";
+import type { DirectoryRequest } from "@/features/college/model";
+import type { ModerationQueue } from "@/features/moderation/model";
 import { Feedback } from "@/ui/Feedback";
 
 type Submit = (fields: FormData) => void;

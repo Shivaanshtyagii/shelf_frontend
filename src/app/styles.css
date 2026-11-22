@@ -9,6 +9,10 @@
   --soft: #edf5f2;
   --radius: 0.9rem;
 }
+.account-page { width: min(100%, 36rem); margin-inline: auto; }
+.profile-menu { position: relative; margin-left: auto; }
+.profile-menu summary { display: flex; cursor: pointer; color: var(--accent); }
+.profile-menu > div { position: absolute; right: 0; z-index: 3; min-width: 12rem; }
 
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; background: var(--paper); color: var(--ink); font: 1rem/1.55 system-ui, sans-serif; }

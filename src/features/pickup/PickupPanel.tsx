@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { statusLabel, type Pickup, type PickupStatus } from "@/lib/types";
+import { statusLabel } from "@/lib/format";
+import type { Pickup, PickupStatus } from "./model";
 
 type Change = (pickup: Pickup, status: PickupStatus, location?: string, time?: string) => void;
 

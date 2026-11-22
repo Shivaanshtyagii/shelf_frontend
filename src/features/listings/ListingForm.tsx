@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRef, useState, type FormEvent } from "react";
 import { api, message } from "@/lib/api";
-import { scopeLabels, type Listing, type Scope } from "@/lib/types";
+import { scopeLabels, type Listing, type Scope } from "./model";
 import { Feedback } from "@/ui/Feedback";
 
 type Attachment = { source: File; kind: "PDF" | "PHOTO"; id: string };

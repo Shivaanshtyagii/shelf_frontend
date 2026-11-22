@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { api, message } from "@/lib/api";
-import { price, type Card } from "@/lib/types";
+import { price } from "@/lib/format";
+import type { Card } from "@/features/listings/model";
 import { Feedback } from "@/ui/Feedback";
 
 export function ListingCard({ item, preview }: { item: Card; preview: boolean }) {

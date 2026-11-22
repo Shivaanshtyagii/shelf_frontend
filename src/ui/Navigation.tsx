@@ -10,7 +10,7 @@ const sections = [
   { href: "/my-stuff", label: "My Stuff" },
 ];
 
-export function Navigation() {
+export function Navigation({ account }: { account: React.ReactNode }) {
   const path = usePathname();
   return (
     <header className="site-header">
@@ -21,7 +21,7 @@ export function Navigation() {
             <Link key={href} href={href} aria-current={path === href ? "page" : undefined}>{label}</Link>
           ))}
         </nav>
-        <Link className="account-link" href="/account">Account</Link>
+        {account}
       </div>
     </header>
   );

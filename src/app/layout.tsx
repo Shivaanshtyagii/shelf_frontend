@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Navigation } from "@/ui/Navigation";
+import { AccountMenu } from "@/features/account/AccountMenu";
 import "./styles.css";
 
 export const metadata: Metadata = {
@@ -12,7 +13,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en">
       <body>
         <a className="skip-link" href="#content">Skip to content</a>
-        <Navigation />
+        <Navigation account={<AccountMenu />} />
         <main id="content" className="shell">{children}</main>
       </body>
     </html>

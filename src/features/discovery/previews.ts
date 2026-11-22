@@ -1,4 +1,4 @@
-import type { Card } from "@/lib/types";
+import type { Card } from "@/features/listings/model";
 
 export const previews: Card[] = [
   { id: "preview-1", scope: "EXPLORE", title: "Data structures & algorithms", subject: "Computer Science",

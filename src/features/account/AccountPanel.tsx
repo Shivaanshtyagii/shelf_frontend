@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
-import { api, ApiError, message } from "@/lib/api";
-import type { Member } from "@/lib/types";
+import { currentMember } from "@/features/account/session";
+import { api, message } from "@/lib/api";
+import type { Member } from "@/features/account/model";
 import { Feedback } from "@/ui/Feedback";
 
 export function AccountPanel() {
@@ -15,12 +16,15 @@ export function AccountPanel() {
   const [notice, setNotice] = useState<{ text: string; error: boolean }>();
   const [busy, setBusy] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [google, setGoogle] = useState(false);
 
   useEffect(() => {
     const abort = new AbortController();
-    api<Member>("/auth/me", { signal: abort.signal }).then(setMember)
+    api<{ google: boolean }>("/auth/providers", { signal: abort.signal })
+      .then((providers) => setGoogle(providers.google)).catch(() => {});
+    currentMember(abort.signal).then(setMember)
       .catch((error: unknown) => {
-        if (!abort.signal.aborted && !(error instanceof ApiError && error.status === 401)) {
+        if (!abort.signal.aborted) {
           setNotice({ text: message(error), error: true });
         }
       }).finally(() => { if (!abort.signal.aborted) setLoading(false); });
@@ -32,10 +36,19 @@ export function AccountPanel() {
     setNotice(undefined);
     try {
       const result = await api<Member | void>("/auth/" + path, { method, body });
+      if (path === "login") {
+        const session = await currentMember();
+        if (!session || session.id !== result?.id) {
+          setNotice({ text: "Your browser could not keep the session. Allow cookies and use the same Shelf address on every page.", error: true });
+          return;
+        }
+        window.location.replace("/");
+        return;
+      }
+      if (path === "logout" || path === "reset") { window.location.replace("/account"); return; }
+      if (path === "me") { window.location.replace("/account"); return; }
       if (result) setMember(result);
-      if (path === "logout") setMember(undefined);
-      if (path === "verify" && member) setMember(await api<Member>("/auth/me"));
-      if (path === "reset") setMember(undefined);
+      if (path === "verify" && member) setMember(await currentMember());
       setNotice({ text: success, error: false });
     } catch (error) {
       setNotice({ text: message(error), error: true });
@@ -79,6 +92,8 @@ export function AccountPanel() {
       </div>
     </> : <>
       <h2>{{ register: "Create an account", forgot: "Request a reset link", reset: "Set a new password" }[mode] ?? "Sign in"}</h2>
+      {params.get("error") === "google" && <Feedback error>Google sign-in could not finish. If you already have a Shelf account with this email, use your password.</Feedback>}
+      {google && ["login", "register"].includes(mode) && <a className="button secondary" href="/api/oauth2/authorization/google">Continue with Google</a>}
       <form className="stack" onSubmit={submit}>
         {mode === "register" && <label>Display name<input name="displayName" required autoComplete="nickname" maxLength={80} /></label>}
         {mode !== "reset" && <label>Email address<input name="email" type="email" autoComplete="email" maxLength={254} required /></label>}

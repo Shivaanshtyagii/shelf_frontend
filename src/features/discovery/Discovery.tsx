@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { api, message } from "@/lib/api";
-import type { ListingPage, Scope } from "@/lib/types";
+import type { ListingPage, Scope } from "@/features/listings/model";
 import { Empty, Feedback } from "@/ui/Feedback";
 import { ListingCard } from "./ListingCard";
 import { previews } from "./previews";
