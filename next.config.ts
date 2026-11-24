@@ -6,7 +6,8 @@ const config: NextConfig = {
   poweredByHeader: false,
   turbopack: { root: process.cwd() },
   async rewrites() {
-    return [{ source: "/api/:path*", destination: backend + "/api/:path*" }];
+    if (process.env.NEXT_PUBLIC_SHELF_NEON_AUTH === "true") return [];
+    return { beforeFiles: [{ source: "/api/:path*", destination: backend + "/api/:path*" }] };
   },
   async headers() {
     return [{ source: "/:path*", headers: [

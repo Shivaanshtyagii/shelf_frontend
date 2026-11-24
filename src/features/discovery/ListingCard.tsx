@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { api, message } from "@/lib/api";
+import { api, apiUrl, message } from "@/lib/api";
 import { price } from "@/lib/format";
 import type { Card } from "@/features/listings/model";
 import { Feedback } from "@/ui/Feedback";
@@ -39,10 +39,10 @@ export function ListingCard({ item, preview }: { item: Card; preview: boolean })
           <strong>{item.priceMinor > 0 ? price(item.priceMinor) : "Free"}</strong>
           {!preview && (physical
             ? <button type="button" disabled={busy} onClick={() => void act("/pickup", { listingId: item.id }, "Pickup requested.")}>Request pickup</button>
-            : <a className="button" href={"/api/listings/" + item.id + "/attachment"} target="_blank" rel="noreferrer">Download PDF</a>)}
+            : <a className="button" href={apiUrl("/listings/" + item.id + "/attachment")} target="_blank" rel="noreferrer">Download PDF</a>)}
         </div>
         {!preview && <div className="row listing-extra">
-          {physical && <a href={"/api/listings/" + item.id + "/attachment"} target="_blank" rel="noreferrer">View photo</a>}
+          {physical && <a href={apiUrl("/listings/" + item.id + "/attachment")} target="_blank" rel="noreferrer">View photo</a>}
           <button type="button" className="text-button" aria-expanded={reporting} onClick={() => setReporting(!reporting)}>Report</button>
         </div>}
         {reporting && <form className="stack" onSubmit={(event) => {

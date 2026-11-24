@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { api, message } from "@/lib/api";
 import { currentMember } from "./session";
 import type { Member } from "./model";
+import { neonAuthEnabled } from "./neon/config";
 
 export function AccountMenu() {
   const path = usePathname();
@@ -29,7 +30,14 @@ export function AccountMenu() {
     <div className="panel stack"><strong>{member.displayName}</strong>
       <Link href="/account">Edit profile</Link>
       <button onClick={async () => {
-        try { await api("/auth/logout", { method: "POST" }); window.location.replace("/"); }
+        try {
+          if (neonAuthEnabled) {
+            const { neonClient } = await import("./neon/client");
+            const { error } = await neonClient.signOut();
+            if (error) throw new Error(error.message || "Sign-out failed.");
+          } else await api("/auth/logout", { method: "POST" });
+          window.location.replace("/");
+        }
         catch (err) { setError(message(err)); }
       }}>Sign out</button>
       {error && <p role="alert">{error}</p>}

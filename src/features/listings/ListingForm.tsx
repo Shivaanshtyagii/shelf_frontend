@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRef, useState, type FormEvent } from "react";
-import { api, message } from "@/lib/api";
+import { api, apiUrl, message } from "@/lib/api";
 import { scopeLabels, type Listing, type Scope } from "./model";
 import { Feedback } from "@/ui/Feedback";
 
@@ -95,7 +95,7 @@ export function ListingForm({ selectedScan, storageEnabled, original }: {
     </label>
     {selectedFile && <p className="muted">Selected file · {selectedFile.name}</p>}
     {!selectedFile && listing?.assetId && !discard && <div className="row">
-      <a href={"/api/listings/" + listing.id + "/attachment"} target="_blank" rel="noreferrer">Current attachment</a>
+      <a href={apiUrl("/listings/" + listing.id + "/attachment")} target="_blank" rel="noreferrer">Current attachment</a>
       <button type="button" className="text-button" disabled={busy} onClick={() => setDiscard(true)}>Remove attachment</button>
     </div>}
     {!storageEnabled && <p className="muted">Cloud attachments are unavailable. You can save the listing details as a draft.</p>}

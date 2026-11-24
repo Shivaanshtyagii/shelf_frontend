@@ -84,7 +84,7 @@ export function CollegePanel() {
   if (loading) return <Feedback>Loading the college directory…</Feedback>;
 
   return <div className="stack generous">
-    {!member && <Empty title="Sign in to see your campus"><Link href="/account">Sign in or create an account</Link></Empty>}
+    {!member && !notice?.error && <Empty title="Sign in to see your campus"><Link href="/account">Sign in or create an account</Link></Empty>}
     {member && !member.verified && <Empty title="Verify your account email first"><Link href="/account">Manage email verification</Link></Empty>}
     {member?.verified && verifiedId && <>
       <nav aria-label="Campus sections" className="tabs">

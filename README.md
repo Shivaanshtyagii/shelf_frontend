@@ -8,10 +8,10 @@ Use Node.js 22 or later. Start the [Spring Boot backend](../backend/README.md), 
 
 ```sh
 npm ci
-npm run dev
+npm run dev:neon
 ```
 
-Open http://localhost:3000. Requests to `/api` are forwarded to Spring Boot on port 8080 by default. Set `SHELF_API_ORIGIN` before running or building Next.js if the API uses a different origin. Hosting the UI and API under a single public origin allows the frontend to use same-origin session cookies and CSRF protection.
+Open http://localhost:3000. The frontend handles Neon Auth at `/api/auth` and forwards app requests from `/api/shelf` to Spring Boot on port 8080 by default. Set `SHELF_API_ORIGIN` if Spring runs on a different address. The [backend setup instructions](../backend/README.md#managed-neon-sign-in-on-the-development-branch) list the Neon Auth variables needed in `frontend/.env.local`.
 
 Camera capture is supported by the device file picker when available. Scan conversion and PDF download run locally. Saving a cloud attachment requires a verified account and the backend's upload capability.
 

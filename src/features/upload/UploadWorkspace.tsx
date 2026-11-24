@@ -46,7 +46,7 @@ export function UploadWorkspace() {
       <h2>{draftId ? "Edit listing" : "Create a listing"}</h2>
       {loading ? <Feedback>Checking account and upload availability…</Feedback> : <>
         {error && <Feedback error>{error}</Feedback>}
-        {!member ? <p><Link href="/account">Sign in</Link> to save a draft or upload an attachment.</p> :
+        {!member ? !error && <p><Link href="/account">Sign in</Link> to save a draft or upload an attachment.</p> :
           !member.verified ? <p><Link href="/account">Verify your account email</Link> to save a draft.</p> :
           (!draftId || draft?.id === draftId) &&
             <ListingForm key={draftId ?? "new"} selectedScan={file} storageEnabled={Boolean(capabilities?.assets)}

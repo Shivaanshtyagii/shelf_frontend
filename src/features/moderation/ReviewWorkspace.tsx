@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState, type ReactNode } from "react";
-import { api, message } from "@/lib/api";
+import { api, apiUrl, message } from "@/lib/api";
 import { scopeLabels } from "@/features/listings/model";
 import { statusLabel } from "@/lib/format";
 import type { DirectoryRequest } from "@/features/college/model";
@@ -63,7 +63,7 @@ export function ReviewWorkspace() {
       {queue.listings.map((listing) => <article className="activity-row stack" key={listing.id}>
         <div className="row split"><h3>{listing.title}</h3><span className="tag">{scopeLabels[listing.scope]}</span></div>
         <p>{listing.description}</p>
-        {listing.assetId && <a href={"/api/listings/" + listing.id + "/attachment"} target="_blank" rel="noreferrer">Open attachment for review</a>}
+        {listing.assetId && <a href={apiUrl("/listings/" + listing.id + "/attachment")} target="_blank" rel="noreferrer">Open attachment for review</a>}
         <ReviewForm busy={busy} submit={(fields) => void act("/moderation/listings/" + listing.id,
           { revision: listing.revision, outcome: fields.get("decision"), reason: fields.get("reason") })}>
           <label>Decision<select name="decision" required defaultValue=""><option value="" disabled>Choose a decision</option><option value="APPROVED">Approve</option><option value="REJECTED">Reject</option></select></label>
